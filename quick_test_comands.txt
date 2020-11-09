@@ -1,1 +1,2 @@
 python main.py action.csv goto.csv grammar.txt input.txt
+python main.py action.csv goto.csv producciones1.txt input.txt
