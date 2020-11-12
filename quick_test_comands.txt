@@ -1,2 +1,1 @@
-python main.py action.csv goto.csv grammar.txt input.txt
 python main.py action1.csv goto1.csv producciones1.txt entrada1.txt
