@@ -125,8 +125,8 @@ class LR():
                         else: ss[2] = ss[0].copy()
                     elif ss[1]: ss[2] = ss[0].copy()
                     else: ss[1] = ss[0].copy()
-                    print(index)
-                    print(ss)
+                    #print(index)
+                    #print(ss)
             else:
                 Exception(f"""
                 Someting went wrong
