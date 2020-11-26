@@ -25,7 +25,8 @@ class Grammar():
     def __str__(self):
         msg = ''
         for key,val in self.productions.items():
-            msg += f'{key} : {val} \n'
+            temp = {x:y for x,y in val.items() if x != 'func'}
+            msg += f'{key} : {temp} \n'
         return msg
 
 class StateTable():
@@ -71,6 +72,7 @@ class LR():
         GenerateRow('stack', 'symbol', 'input', 'Right Sentential Form', 'action', header=True)
         # Initialize list to execute calculations
         ss = [{},{},{},{}]
+        memory_queue = []
         while True:
             letter = input_string[pointer]
             state = stack[-1]
@@ -117,17 +119,24 @@ class LR():
                 if func:
                     ctx = execjs.compile(func)
                     ss = ctx.call("f", ss)
-                    if index in (0,1): ss[3] = ss[0].copy()
+                    if index in range(3,13):
+                        memory_queue.append(ss[0]['n'])
+                        if ss[1] and not ss[2]:
+                            ss[2]['n'] = memory_queue.pop(0)
+                        elif not ss[1]: ss[1]['n'] = memory_queue.pop(0)
+                    elif index in (0,1): 
+                        ss[3] = ss[0].copy()
+                        ss[2] = {}
                     elif index == 2:
-                        if not ss[3]: ss[3] = ss[2].copy()
+                        if not ss[3]: 
+                            ss[3] = ss[1].copy()
+                            ss[2] = {}
+                        else: 
+                            ss[2] = ss[1].copy()
                         ss[1] = {}
                     elif index == 13: 
-                        if not ss[3]: ss[3] = ss[0].copy()
-                        else: ss[2] = ss[0].copy()
-                    elif ss[1]: ss[2] = ss[0].copy()
-                    else: ss[1] = ss[0].copy()
-                    print(index)
-                    print(ss)
+                        ss[1] = ss[0].copy()
+                        if memory_queue: ss[2]['n'] = memory_queue.pop(0)
             else:
                 Exception(f"""
                 Someting went wrong
@@ -189,11 +198,14 @@ def main(argv):
     
     grammar = Grammar(grammar_file)
     state_table = StateTable(action_file, goto_file)
-    input_string = input_file[0].replace(' ','')
-    # print(grammar)
-
     lr =LR(grammar, state_table)
-    lr.JudgeString(input_string)
+
+    for input_string in input_file:
+        input_string = input_string.replace(' ','')
+        if not input_string: continue
+        lr.JudgeString(input_string)
+        print('-------------------------------------------------')
+        print('-------------------------------------------------')
 
 
 if __name__ == "__main__":
