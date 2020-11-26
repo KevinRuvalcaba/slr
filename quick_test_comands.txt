@@ -1,1 +1,2 @@
 python main.py action1.csv goto1.csv producciones1.txt entrada1.txt
+python main.py action2.csv goto2.csv producciones2.txt entrada2.txt

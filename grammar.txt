@@ -1,2 +1,91 @@
 grammar
 dude
+
+function(ss) 
+ss[0].put("n", ss[2].containsKey("n")? ss[1].get("n") * 10 + ss[2].get("n") : ss[1].get("n"))
+
+[{n:12},{n:1},{n:2}]
+
+123#
+
+
+function(ss) ss[0].put("n", ss[2].containsKey("n")? ss[1].get("n") * 10 + ss[2].get("n"): ss[1].get("n"))
+
+this is a testin gword document, is this really fast ? or is this actually slower ? who actually know whoaaa dude broooooo
+
+
+
+ss[2].containsKey("n") ? ss[2].put("n", ss[1].get("n")) : ss[1].put("n", ss[0].get("n")) 
+
+function(ss) {
+    if(ss[1].containsKey("n")){
+        ss[2].put("n", ss[1].get("n"))
+        ss[1].put("n", ss[0].get("n"))
+    }
+    ss[0].put("n", 0)
+}
+
+
+
+import execjs
+f1 = """
+  f = function (ss) {
+        f1 = function (ss) {// inicio accion semantica
+	   ss[0].put("a",221);
+	   if(ss[0].contains("x")) ss[0]["contiene1"] = "si";
+	   if(!ss[0].contains("zz")) ss[0]["contiene2"] = "no";
+	   }
+	//fin de acción semántica
+	// tiene que agregar lo que viene enseguida
+    	f2 = function (ss) {
+           for(var i = 0; i < ss.length; i++) {
+	   	   ss[i]["put"] = function(key,value) {this[key] = value};
+		   ss[i]["containsKey"] = function(key) {return this[key] != null};
+		   ss[i]["get"] = function(key) {return this[key]};
+           }
+        }
+        f2(ss);
+	f1(ss)
+	return ss;     
+  }
+"""
+ctx = execjs.compile(f1)
+dico = dict()
+dico["x"] = 10
+ss = [dico]
+ss = ctx.call("f",ss)
+print(ss)
+
+* + 2 3 # 5 0 # 4 7 # $
+
+function(ss){
+  if(ss[2].containsKey("n")) 
+    ss[0].put("n",ss[1].get("n") * Math.pow(10, ss[2].get("n").toString().length())  + ss[2].get("n")); 
+  else ss[0].put("n", ss[1].get("n"));
+}
+
+
+
+
+exe = "function(ss){ss[0].put('n',3)}"
+pop = "function (ss){\nfor(var i = 0; i < ss.length; i++){\n ss[i]["put"] = function(key,value) {this[key] = value};\n\n\n   ss[i]["contains"] = function(key) {return this[key] != null};\n}\n}"
+wrapper = f"f = function(ss){f1={exe} \n f2={pop} \nf2(ss) \nf1(ss) \nreturn ss}"
+wrapper = f"""
+f = function(ss){
+    f1 = {exe}
+    f2 = {pop}
+    f2(ss);
+    f1(ss);
+    return ss;
+}
+"""
+body = f"""
+f1 = {exe}
+f2 = {pop}
+f2(ss);
+f1(ss);
+return ss;
+"""
+
+
+
