@@ -70,7 +70,7 @@ class LR():
         symbol = '$'
         GenerateRow('stack', 'symbol', 'input', 'Right Sentential Form', 'action', header=True)
         # Initialize list to execute calculations
-        ss = [{},{},{},{},{}]
+        ss = [{},{},{},{}]
         while True:
             letter = input_string[pointer]
             state = stack[-1]
@@ -119,14 +119,15 @@ class LR():
                     ss = ctx.call("f", ss)
                     if index in (0,1): ss[3] = ss[0].copy()
                     elif index == 2:
+                        if not ss[3]: ss[3] = ss[2].copy()
                         ss[1] = {}
                     elif index == 13: 
                         if not ss[3]: ss[3] = ss[0].copy()
                         else: ss[2] = ss[0].copy()
                     elif ss[1]: ss[2] = ss[0].copy()
                     else: ss[1] = ss[0].copy()
-                    #print(index)
-                    #print(ss)
+                    print(index)
+                    print(ss)
             else:
                 Exception(f"""
                 Someting went wrong
